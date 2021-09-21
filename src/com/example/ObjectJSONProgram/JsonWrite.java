@@ -4,33 +4,79 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Scanner;
 
 public class JsonWrite {
+    public static Scanner scanner = new Scanner(System.in);
+    public static JSONArray stockList = new JSONArray();
     public static void main(String[] args) throws IOException, ParseException, org.json.simple.parser.ParseException {
-       System.out.println("welcome to the JSON compute");
-        JSONParser jsonParser = new JSONParser();
-        FileReader reader = new FileReader("C:\\Users\\PC\\IdeaProjects\\OOPJSONProgram\\src\\data.json");
-        //java object variable
-        Object obj = jsonParser.parse(reader); //this is main object contain i.e which contain JSONPARSER, JSONOBJECT,JSONARRAY
-        //JSON object after typecasting
-        JSONObject inventoryObj = (JSONObject) obj;
-        JSONArray array = (JSONArray) inventoryObj.get("inventory detail");
+        System.out.println("stock market data");
+        getData();
+    }
+        private static void getData() {
+            System.out.println("Enter the choice 1.Add stock 2.Print stock report 3, exit");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    addStock();
+                    break;
+                case 2:
+                    printStock();
+                    break;
+            }
+    }
+        public static void printStock () {
+            System.out.println("stock data");
+            JSONParser jsonParser = new JSONParser();
+            try {
+                JSONArray jsonArray = (JSONArray) jsonParser.parse(new FileReader("C:\\Users\\PC\\IdeaProjects\\OOPJSONProgram\\src\\market.json"));
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    System.out.println("stock data");
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                    String name = (String) jsonObject.get("name");
+                    double price = (double) jsonObject.get("price");
+                    long noOfShares = (long) jsonObject.get("noOfShares");
+                    System.out.println("name" + name);
+                    System.out.println("noOfShares" + noOfShares);
+                    System.out.println("price" + price);
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println("file not appear");
+            } catch (IOException e) {
+                System.out.println("file IO Exception");
+            } catch (org.json.simple.parser.ParseException e) {
+                e.printStackTrace();
+            }
+            getData();
 
-        for (int i = 0; i < array.size(); i++) {
-            JSONObject inventory = (JSONObject)array.get(i);
-            String name = (String) inventory.get("name");
-            double weight = Double.parseDouble(inventory.get("weight").toString());
-            double priceKg = Double.parseDouble(inventory.get("priceKg").toString());
-
-            System.out.println("inventory detail");
-            System.out.println("name" + name);
-            System.out.println("weight" + weight);
-            System.out.println("priceKg" + priceKg);
-            double value = weight * priceKg;
-            System.out.println("value" + value);
+        }
+        public static void addStock() {
+            System.out.println("Add the stock");
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter the stock name");
+            String stockName = scanner.nextLine();
+            System.out.println("Enter the price");
+            double price = scanner.nextDouble();
+            System.out.println("Enter the noOfStock");
+            int noOfShares = scanner.nextInt();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("name", stockName);
+            jsonObject.put("noOfShares", noOfShares);
+            jsonObject.put("price", price);
+            stockList.add(jsonObject);
+            try {
+                FileWriter fileWriter = new FileWriter("C:\\Users\\PC\\IdeaProjects\\OOPJSONProgram\\src\\market.json");
+                fileWriter.write(stockList.toJSONString());
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Add" + jsonObject);
+            getData();
         }
     }
-}
