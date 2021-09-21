@@ -29,6 +29,8 @@ public class JsonWrite {
             System.out.println("name" + name);
             System.out.println("weight" + weight);
             System.out.println("priceKg" + priceKg);
+            double value = weight * priceKg;
+            System.out.println("value" + value);
         }
     }
 }
