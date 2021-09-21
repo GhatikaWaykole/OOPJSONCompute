@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 public class JsonWrite {
     public static Scanner scanner = new Scanner(System.in);
+    //JSONArray to add the JSONObject data
     public static JSONArray stockList = new JSONArray();
     public static void main(String[] args) throws IOException, ParseException, org.json.simple.parser.ParseException {
         System.out.println("stock market data");
@@ -30,6 +31,9 @@ public class JsonWrite {
                     break;
             }
     }
+    /* JSONParser to give the json file data
+    * json path given in filereader parser
+     */
         public static void printStock () {
             System.out.println("stock data");
             JSONParser jsonParser = new JSONParser();
@@ -69,6 +73,8 @@ public class JsonWrite {
             jsonObject.put("noOfShares", noOfShares);
             jsonObject.put("price", price);
             stockList.add(jsonObject);
+            double result = price * noOfShares;
+            System.out.println("stock value"+result);
             try {
                 FileWriter fileWriter = new FileWriter("C:\\Users\\PC\\IdeaProjects\\OOPJSONProgram\\src\\market.json");
                 fileWriter.write(stockList.toJSONString());
