@@ -24,16 +24,11 @@ public class JsonWrite {
             String name = (String) inventory.get("name");
             double weight = Double.parseDouble(inventory.get("weight").toString());
             double priceKg = Double.parseDouble(inventory.get("priceKg").toString());
-            //   String type = (String) inventory.get("type");
 
             System.out.println("inventory detail");
             System.out.println("name" + name);
             System.out.println("weight" + weight);
             System.out.println("priceKg" + priceKg);
-            //   System.out.println("type" + type);
-
-            double value = weight * priceKg;
-            System.out.println("value" + value);
         }
     }
 }
